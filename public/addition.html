@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition</title>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link rel="stylesheet" href="addition.css">
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/babel">
+
+        function App(){
+            const [state, setState] = React.useState({
+                num1: 1,
+                num2: 2,
+                response: "",
+                score: 0,
+                correct: false
+            })
+
+            var  opperation = document.getElementById('opperation');
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+            
+            function inputKeyPress(event){
+                if(event.key === "Enter"){
+                    const n1=parseInt(state.num1)
+                    const n2=parseInt(state.num2)
+                    const answer= parseInt(state.response)
+                    if(n1 + n2 === answer){
+                        setState({
+                            ...state,
+                            score: state.score+1,
+                            response:"",
+                            num1:Math.floor(Math.random() * (20 - 1)) + 1,
+                            num2:Math.floor(Math.random() * (20 - 1)) + 1,
+                            correct:true,
+                        })
+                        opperation.classList.add('active');
+                    }else{
+                        setState({
+                            ...state,
+                            score: 0,
+                            response:"",
+                            num1:Math.floor(Math.random() * (20 - 1)) + 1,
+                            num2:Math.floor(Math.random() * (20 - 1)) + 1,
+                        })
+                        opperation.classList.add('active');
+                    }
+                }
+            }
+
+            function updateResponse(event){
+                setState({
+                    ...state,
+                    response: event.target.value,
+                    correct:false,
+                });
+            }
+
+            return(
+                
+                
+                <div class="animation">
+                    
+                    <div className={state.correct ? "opperation": ""} id="opperation">{state.num1} + {state.num2 } =</div>
+                    <div>Total:</div>
+                    <input autoFocus={true} onKeyPress={inputKeyPress} onChange={updateResponse} value={state.response} name="total"  placeholder="Total"/>
+                    <div id="score">Score= {state.score}</div>
+
+                    <div class="pop-up">
+
+                    </div>
+                </div>
+                
+            )
+        }
+
+        ReactDOM.render(<App/>, document.querySelector("#app"))
+
+    </script>
+</body>
+</html>
